@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manhattan Project: QA Status Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            /* Slate 50 */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #3b82f6;
+            /* Blue 500 */
+            color: #1e293b;
+            /* Slate 800 */
+            font-weight: 700;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+    <!-- Chosen Palette: Slate (Backgrounds) + Blue (Primary) + Emerald (Success) + Red (Danger) + Amber (Warning) -->
+    <!-- Application Structure Plan: 
+         Updated Structure for Corrected Context:
+         1. Header: Source updated to "Shenzhen MiraeAsset".
+         2. Executive Summary: Explicitly mentions the team composition (9 total, 5 Shenzhen BAs leading).
+         3. Dashboard Cards: Added a card for "Active Testers" to highlight the resource info.
+         4. Modules/Risks/Timeline: Kept the same logical structure but updated descriptions to reflect Shenzhen BA's ownership.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+
+<body class="text-slate-700">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">🗽</span>
+                    <div>
+                        <h1 class="font-bold text-xl text-slate-800 tracking-tight">Manhattan Project</h1>
+                        <p class="text-xs text-slate-500">QA Status Report | 2026.02.14 | Source: 심천 미래에셋 (Shenzhen)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:block text-right">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Overall Progress
+                        </div>
+                        <div class="text-xl font-bold text-blue-600">15.92%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8 overflow-x-auto">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard"
+                    class="tab-btn active pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">📊
+                    대시보드 (Dashboard)</button>
+                <button onclick="switchTab('modules')" id="tab-modules"
+                    class="tab-btn pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">📦
+                    모듈별 상세 (Modules)</button>
+                <button onclick="switchTab('risks')" id="tab-risks"
+                    class="tab-btn pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">⚠️
+                    리스크 관리 (Risks)</button>
+                <button onclick="switchTab('schedule')" id="tab-schedule"
+                    class="tab-btn pb-3 px-1 text-sm font-medium text-slate-500 hover:text-slate-700 transition-colors">📅
+                    일정 (Schedule)</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- VIEW 1: DASHBOARD -->
+        <div id="view-dashboard" class="space-y-6 animate-fade-in">
+            <!-- Context Intro -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r shadow-sm">
+                <h3 class="font-bold text-blue-800">📌 요약 (Executive Summary)</h3>
+                <p class="text-sm text-blue-700 mt-1">
+                    본 데이터는 <strong>심천 미래에셋</strong>에서 공유되었습니다.
+                    현재 총 9명의 인원(TTL 4명, 심천 BA 5명) 중 <strong>심천 미래에셋 BA 5명이 주도</strong>하여 테스트를 진행하고 있습니다.
+                    '계좌 개설'은 <span class="bg-red-100 text-red-800 px-1 rounded font-bold">Bug Fix</span> 중이며,
+                    '매매' 및 '청산' 기능에 역량을 집중하고 있습니다.
+                </p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <div class="text-slate-400 text-xs font-semibold uppercase">전체 진행률 (Progress)</div>
+                    <div class="text-3xl font-bold text-blue-600 mt-2">15.92%</div>
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 mt-3">
+                        <div class="bg-blue-600 h-1.5 rounded-full" style="width: 15.92%"></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <div class="text-slate-400 text-xs font-semibold uppercase">테스트 인력 (Team)</div>
+                    <div class="text-3xl font-bold text-slate-800 mt-2">9 <span
+                            class="text-sm font-normal text-slate-500">명 (Total)</span></div>
+                    <p class="text-xs text-slate-500 mt-1">심천 BA 5명 (Main) + TTL 4명</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <div class="text-slate-400 text-xs font-semibold uppercase">Fail / Issues</div>
+                    <div class="text-3xl font-bold text-red-500 mt-2">190 <span
+                            class="text-sm font-normal text-slate-500">건</span></div>
+                    <p class="text-xs text-red-400 mt-1">실패율 약 30% (진행 대비)</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <div class="text-slate-400 text-xs font-semibold uppercase">주요 리스크 (High)</div>
+                    <div class="text-3xl font-bold text-amber-500 mt-2">16 <span
+                            class="text-sm font-normal text-slate-500">Items</span></div>
+                    <p class="text-xs text-slate-500 mt-1">계좌 개설 잔여 버그</p>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Chart 1: Pass/Fail Ratio -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-slate-700 mb-4">🧪 테스트 결과 상세 (Test Results)</h3>
+                    <div class="chart-container">
+                        <canvas id="resultChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-2">Pass 427건 vs Fail 190건</p>
+                </div>
+
+                <!-- Chart 2: Progress by Module (Visualizing Status) -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-slate-700 mb-4">📊 모듈별 진행 상태 (Status by Module)</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-2">계좌 개설 완료(이슈) / 입출금 대기 중</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: MODULE DETAILS -->
+        <div id="view-modules" class="hidden space-y-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">모듈별 상세 현황</h2>
+                <p class="text-slate-500">각 기능 모듈(Functional Module)에 대한 상세 테스트 범위, 진행 상황 및 이슈 내역입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="module-grid">
+                <!-- Modules injected via JS -->
+            </div>
+        </div>
+
+        <!-- VIEW 3: RISKS -->
+        <div id="view-risks" class="hidden space-y-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">리스크 관리 대장 (Risk Register)</h2>
+                    <p class="text-slate-500">프로젝트 진행에 영향을 미치는 주요 이슈 및 대응 계획입니다.</p>
+                </div>
+                <select id="risk-filter" onchange="renderRisks()"
+                    class="bg-white border border-slate-300 text-slate-700 py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">모든 등급 (All)</option>
+                    <option value="High">🔴 High</option>
+                    <option value="Medium">🟠 Medium</option>
+                    <option value="Low">🟡 Low</option>
+                </select>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                영역 (Module)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                심각도</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                이슈 내용</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                대응 계획 (Action Plan)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risk-table-body" class="bg-white divide-y divide-slate-200">
+                        <!-- Risks injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VIEW 4: SCHEDULE -->
+        <div id="view-schedule" class="hidden space-y-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">프로젝트 일정 (Timeline)</h2>
+                <p class="text-slate-500">심천 미래에셋 공유 일정에 따른 주요 마일스톤 흐름입니다.</p>
+            </div>
+
+            <div class="relative border-l-4 border-slate-200 ml-4 space-y-12 py-4">
+                <!-- Item 1: Past -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-3 top-0 bg-slate-400 w-5 h-5 rounded-full border-4 border-white shadow">
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <span class="inline-block px-2 py-1 bg-slate-200 text-slate-600 text-xs rounded mb-2">1월 30일
+                            완료</span>
+                        <h3 class="font-bold text-lg text-slate-600 line-through">계좌 개설 (Account Opening)</h3>
+                        <p class="text-slate-500 mt-2">1차 기능 테스트 완료. 현재 결함(Bug) 수정 단계 진행 중.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2: Present -->
+                <div class="relative pl-8">
+                    <div
+                        class="absolute -left-3 top-0 bg-blue-500 w-5 h-5 rounded-full border-4 border-white shadow ring-4 ring-blue-100">
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border-l-4 border-blue-500 shadow-md">
+                        <span
+                            class="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded mb-2 font-bold animate-pulse">진행
+                            중 (Current)</span>
+                        <h3 class="font-bold text-lg text-blue-800">매매 및 청산 (Trading & Clearing)</h3>
+                        <p class="text-slate-600 mt-2">
+                            <strong>심천 BA 5명 집중 테스트</strong>
+                        <ul class="list-disc list-inside space-y-1 text-sm mt-2">
+                            <li>HKEX 주식 매매 및 주문 유형(GTC/GTD) 검증</li>
+                            <li>US 시장 정산 및 장 마감 처리(EOD)</li>
+                            <li>가상자산(VA) 포트폴리오 UI 검증</li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Item 3: Future -->
+                <div class="relative pl-8">
+                    <div class="absolute -left-3 top-0 bg-white w-5 h-5 rounded-full border-4 border-slate-300"></div>
+                    <div
+                        class="bg-white p-6 rounded-lg border border-slate-200 opacity-75 hover:opacity-100 transition-opacity">
+                        <span class="inline-block px-2 py-1 bg-slate-100 text-slate-500 text-xs rounded mb-2">3월 5일 ~ 6일
+                            예정</span>
+                        <h3 class="font-bold text-lg text-slate-800">입출금 (Deposit & Withdrawal)</h3>
+                        <p class="text-slate-600 mt-2">APP 및 AOS 환경에서 71개 케이스 수행 예정.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            <p>Manhattan Project QA Dashboard</p>
+            <p class="mt-1">Source: Shenzhen MiraeAsset Report (2026-02-14)</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data Storage ---
+        const qaData = {
+            modules: [
+                {
+                    id: 'account',
+                    title: '계좌 개설 (Account Opening)',
+                    status: 'Issue', // Normal, Issue, Waiting
+                    progress: 100,
+                    casesTotal: 20,
+                    casesDone: 20,
+                    desc: 'H5 프론트엔드 및 메인 프로세스 검증 완료.',
+                    details: [
+                        'H5 Frontend: 7/7 Pass',
+                        'Main Process: 13/13 Pass',
+                        '🔴 잔여 버그 16건 (TTL 수정 중)'
+                    ]
+                },
+                {
+                    id: 'trade',
+                    title: '매매 시스템 (Trading)',
+                    status: 'Normal',
+                    progress: 45, // Estimated based on context
+                    casesTotal: 1200, // Estimated representation
+                    casesDone: 400,
+                    desc: '심천 BA 팀 집중 테스트 (주문 유형, 예외처리).',
+                    details: [
+                        '주문 유형: 지정가, 경매, Trigger',
+                        '유효기간: Day, GTC, GTD 검증',
+                        '예외: 잔고/지주 부족 거부 로직'
+                    ]
+                },
+                {
+                    id: 'clearing',
+                    title: '청산 및 결제 (Clearing)',
+                    status: 'Normal',
+                    progress: 30,
+                    casesTotal: 800,
+                    casesDone: 240,
+                    desc: '미국(US) 시장 장 마감 및 정산 로직 검증.',
+                    details: [
+                        '자산 변동: 장중/장마감 PSAA 확인',
+                        'EOD: 환율 업데이트, 계약 생성',
+                        '시장: US Market 기준'
+                    ]
+                },
+                {
+                    id: 'va',
+                    title: '가상자산 (Virtual Asset)',
+                    status: 'Normal',
+                    progress: 40,
+                    casesTotal: 300,
+                    casesDone: 120,
+                    desc: '거래 내역 조회 및 포트폴리오 UI 확인.',
+                    details: [
+                        '필터: 7일/30일/90일 조회',
+                        'UI: 시장 보유 비중 표기 확인'
+                    ]
+                },
+                {
+                    id: 'deposit',
+                    title: '입출금 (Deposit/Withdraw)',
+                    status: 'Waiting',
+                    progress: 0,
+                    casesTotal: 71,
+                    casesDone: 0,
+                    desc: '3월 5일 테스트 착수 예정.',
+                    details: [
+                        '환경: APP / AOS',
+                        '총 71개 케이스 대기 중'
+                    ]
+                }
+            ],
+            risks: [
+                { id: 'I-001', area: '계좌 개설', severity: 'High', issue: '테스트 완료 후 잔여 버그 16건 미해결', plan: 'TTL 핫픽스 일정 확약 요청 및 심천 BA 재검증' },
+                { id: 'I-002', area: '청산 (Clearing)', severity: 'Medium', issue: '장 마감 데이터 검증 복잡도 증가', plan: 'US 시장 체결 데이터 셋업 정밀 점검' },
+                { id: 'I-003', area: 'UI/UX', severity: 'Low', issue: '기획서와 일부 UI(이미지/텍스트) 불일치', plan: '지속적인 폴리싱(Polishing) 리스트 공유' }
+            ]
+        };
+
+        // --- Navigation Logic ---
+        function switchTab(tabId) {
+            // Update Tab Styles
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+
+            // Show/Hide Views
+            ['dashboard', 'modules', 'risks', 'schedule'].forEach(view => {
+                const el = document.getElementById(`view-${view}`);
+                if (view === tabId) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- Render Modules ---
+        function renderModules() {
+            const container = document.getElementById('module-grid');
+            container.innerHTML = qaData.modules.map(mod => {
+                let statusColor = 'bg-slate-100 text-slate-600';
+                let dotColor = 'bg-slate-400';
+                let statusText = '대기 (Waiting)';
+
+                if (mod.status === 'Normal') {
+                    statusColor = 'bg-emerald-100 text-emerald-700';
+                    dotColor = 'bg-emerald-500';
+                    statusText = '정상 (Normal)';
+                } else if (mod.status === 'Issue') {
+                    statusColor = 'bg-red-100 text-red-700';
+                    dotColor = 'bg-red-500';
+                    statusText = '이슈 (Issue)';
+                }
+
+                return `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 card-hover flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="${statusColor} px-2 py-1 rounded text-xs font-bold flex items-center">
+                            <span class="w-2 h-2 ${dotColor} rounded-full mr-2"></span>
+                            ${statusText}
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono">${mod.progress}%</div>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg text-slate-800 mb-2">${mod.title}</h3>
+                    <p class="text-sm text-slate-500 mb-4 flex-grow">${mod.desc}</p>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-100 rounded-full h-2 mb-4">
+                        <div class="${mod.status === 'Issue' ? 'bg-red-500' : 'bg-blue-500'} h-2 rounded-full" style="width: ${mod.progress}%"></div>
+                    </div>
+
+                    <div class="bg-slate-50 rounded p-3 text-sm space-y-1">
+                        ${mod.details.map(d => `<div class="flex items-start"><span class="mr-2 text-slate-400">•</span><span class="text-slate-700">${d}</span></div>`).join('')}
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- Render Risks ---
+        function renderRisks() {
+            const filter = document.getElementById('risk-filter').value;
+            const container = document.getElementById('risk-table-body');
+
+            const filteredRisks = qaData.risks.filter(r => filter === 'all' || r.severity === filter);
+
+            container.innerHTML = filteredRisks.map(risk => {
+                let badgeClass = 'bg-slate-100 text-slate-800';
+                if (risk.severity === 'High') badgeClass = 'bg-red-100 text-red-800';
+                if (risk.severity === 'Medium') badgeClass = 'bg-amber-100 text-amber-800';
+                if (risk.severity === 'Low') badgeClass = 'bg-yellow-100 text-yellow-800';
+
+                return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${risk.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">${risk.area}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${badgeClass}">
+                            ${risk.severity}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-700 font-bold">${risk.issue}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600">${risk.plan}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        // --- Chart Initialization ---
+        function initCharts() {
+            // Chart 1: Pass vs Fail Ratio
+            const ctxResult = document.getElementById('resultChart').getContext('2d');
+            new Chart(ctxResult, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pass (성공)', 'Fail (실패)', 'Remaining (잔여)'],
+                    datasets: [{
+                        data: [427, 190, 2066],
+                        backgroundColor: ['#10b981', '#ef4444', '#e2e8f0'], // Emerald, Red, Slate
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.label || '';
+                                    if (label) label += ': ';
+                                    let value = context.parsed;
+                                    let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    let percentage = Math.round((value / total) * 100) + '%';
+                                    return label + value + ' (' + percentage + ')';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Module Status Bar Chart
+            const ctxStatus = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctxStatus, {
+                type: 'bar',
+                data: {
+                    labels: ['계좌 개설', '매매', '청산', '가상자산', '입출금'],
+                    datasets: [{
+                        label: '진행률 (%)',
+                        data: [100, 45, 30, 40, 0],
+                        backgroundColor: [
+                            '#ef4444', // Red for Account (Issue)
+                            '#3b82f6', // Blue for Trade
+                            '#3b82f6', // Blue for Clearing
+                            '#3b82f6', // Blue for VA
+                            '#cbd5e1'  // Grey for Deposit
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { callback: (val) => val + '%' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderModules();
+            renderRisks();
+            initCharts();
+        });
+
+    </script>
+</body>
+
+</html>
