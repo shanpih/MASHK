@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAS 맨하탄 프로젝트 통합 현황 (2026.02.14 Final)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- 
+        Base Style: Project_summary_20260214_1.html
+        Palette: "Trust & Tech" (Vibrant Blues)
+        Primary: #1e3a8a (Blue 900)
+        Secondary: #3b82f6 (Blue 500)
+    -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Timeline Styling (From Project_summary.html) */
+        .step-card {
+            position: relative;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+
+        .step-card:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 1024px) {
+            .h-line {
+                height: 2px;
+                width: 100%;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                background-color: #e5e7eb;
+                z-index: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white py-10 px-4 shadow-lg">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-3xl md:text-5xl font-black mb-2 tracking-tight">MAS 맨하탄 프로젝트</h1>
+            <p class="text-blue-200 text-lg md:text-xl font-medium">주간 통합 진행 현황 | 2026.02.14 기준</p>
+            <div class="mt-6 flex flex-wrap justify-center gap-4">
+                <span class="bg-blue-800 px-4 py-1 rounded-full border border-blue-600 font-bold text-sm">📅 가동 목표:
+                    2026.06 (D-4개월)</span>
+                <span class="bg-indigo-800 px-4 py-1 rounded-full border border-indigo-600 font-bold text-sm">📍
+                    심천-홍콩-TTL 협업</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-4 space-y-8 -mt-8">
+
+        <!-- Section 1: Executive Summary -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Metric Card -->
+            <div
+                class="bg-white rounded-xl shadow-lg p-6 md:col-span-1 flex flex-col justify-center items-center text-center border-t-4 border-blue-500 z-10">
+                <h2 class="text-gray-500 font-bold text-sm uppercase tracking-wider mb-2">전체 공정률</h2>
+                <div class="relative w-40 h-40">
+                    <canvas id="overallProgressChart"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                        <span class="text-4xl font-black text-blue-900">45%</span>
+                        <span class="text-xs text-gray-400 font-bold">진행 완료</span>
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-gray-600">단계: <strong class="text-blue-600">통합 준비 & SIT 시작</strong></p>
+            </div>
+
+            <!-- Summary Text -->
+            <div class="bg-white rounded-xl shadow-lg p-8 md:col-span-2 flex flex-col justify-center z-10">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-4">프로젝트 요약 (Executive
+                    Summary)</h2>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    현재 전체 공정률 <strong class="text-blue-600">45%</strong>로, 핵심 인프라 및 Core 시스템 구축이 완료(80%)되었습니다.
+                    프로젝트는 계획대로 순항 중이며, 현재 **통합 준비(Integration Preparation)** 단계로 전환되었습니다.
+                </p>
+                <p class="text-gray-600 leading-relaxed">
+                    <span class="bg-yellow-100 px-1 rounded font-bold text-gray-700">심천 BA 5명</span>을 중심으로 본격적인 **SIT
+                    테스트**가 진행 중이나,
+                    Apps UI 부문의 디자인 변경으로 인한 작업량 증가가 주요 리스크로 식별되어 집중 관리가 필요합니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: Project Roadmap (Integrated from Project_summary.html) -->
+        <section>
+            <div class="mb-6 text-center md:text-left">
+                <h2 class="text-2xl font-bold text-gray-800">🗓️ 프로젝트 진행 단계</h2>
+                <p class="text-gray-500 mt-1">기반 구축을 완료하고 통합 테스트 준비 단계로 진입했습니다.</p>
+            </div>
+
+            <div class="relative p-4">
+                <!-- Desktop Connector Line -->
+                <div class="hidden lg:block absolute h-line bg-gray-200 top-1/2 w-full z-0" style="top: 50%;"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
+
+                    <!-- Step 1 -->
+                    <div class="step-card bg-gray-100 rounded-lg p-6 shadow border border-gray-200 opacity-70">
+                        <div class="text-xs font-bold text-gray-500 mb-1">STEP 01</div>
+                        <h3 class="font-bold text-lg text-gray-700">기반 구축 (완료)</h3>
+                        <div class="mt-2 text-green-600 font-bold text-sm">✅ SIT/UAT 환경 셋업</div>
+                    </div>
+
+                    <!-- Step 2 (Current) -->
+                    <div
+                        class="step-card bg-white rounded-lg p-6 shadow-xl border-t-4 border-blue-500 transform scale-105 ring-4 ring-blue-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="text-xs font-bold text-blue-600">STEP 02 (현재)</div>
+                            <span class="animate-pulse flex h-3 w-3 rounded-full bg-blue-500"></span>
+                        </div>
+                        <h3 class="font-bold text-lg text-blue-900">통합 준비 & SIT</h3>
+                        <ul class="mt-3 space-y-2 text-sm text-gray-600">
+                            <li class="flex items-center"><span class="mr-2 text-blue-400">●</span>BA SIT 테스트 시작</li>
+                            <li class="flex items-center"><span class="mr-2 text-blue-400">●</span>Apps UI 재설계 반영</li>
+                            <li class="flex items-center"><span class="mr-2 text-blue-400">●</span>VA/Data 연결</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card bg-white rounded-lg p-6 shadow border border-gray-200">
+                        <div class="text-xs font-bold text-gray-500 mb-1">STEP 03 (Next)</div>
+                        <h3 class="font-bold text-lg text-gray-800">UAT & 안정화</h3>
+                        <p class="mt-2 text-sm text-gray-500">사용자 인수 테스트</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card bg-white rounded-lg p-6 shadow border border-gray-200">
+                        <div class="text-xs font-bold text-gray-500 mb-1">STEP 04 (2026.6)</div>
+                        <h3 class="font-bold text-lg text-gray-800">Go-Live</h3>
+                        <p class="mt-2 text-sm text-gray-500">정상 가동 목표</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Organization & Testing Structure (Style from 20260214_1) -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Shenzhen Team Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="mb-4 border-b border-gray-100 pb-4 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">👥 심천 IT 인력 구성</h2>
+                        <p class="text-sm text-gray-500 mt-1">총 9명 (전원 채용 완료)</p>
+                    </div>
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">Testing Lead</span>
+                </div>
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="w-full md:w-1/2 chart-container" style="height: 220px;">
+                        <canvas id="shenzhenTeamChart"></canvas>
+                    </div>
+                    <div class="w-full md:w-1/2 mt-4 md:mt-0 md:pl-4 text-sm space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-gray-700">BA (Business Analyst)</span>
+                            <span class="font-bold text-blue-600">5명</span>
+                        </div>
+                        <p class="text-xs text-gray-500 pl-2 border-l-2 border-gray-200">전원 경력직, 테스트 주도</p>
+
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="font-bold text-gray-700">개발 (Dev)</span>
+                            <span class="font-bold text-indigo-600">2명</span>
+                        </div>
+                        <p class="text-xs text-gray-500 pl-2 border-l-2 border-gray-200">iOS 1명, Java 1명</p>
+
+                        <div class="flex items-center justify-between mt-2">
+                            <span class="font-bold text-gray-700">인프라/관리</span>
+                            <span class="font-bold text-gray-600">2명</span>
+                        </div>
+                        <p class="text-xs text-gray-500 pl-2 border-l-2 border-gray-200">Network 1명, HR 1명</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing & Collaboration Structure -->
+            <div class="bg-white rounded-xl shadow-md p-6 flex flex-col">
+                <div class="mb-4 border-b border-gray-100 pb-4">
+                    <h2 class="text-xl font-bold text-gray-800">🛠️ 테스트 및 협업 구조</h2>
+                    <p class="text-sm text-gray-500 mt-1">TTL 공동 근무 및 역할 분담</p>
+                </div>
+
+                <div class="flex-1 space-y-4">
+                    <!-- Test Team -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-gray-800 mb-2 flex items-center">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>통합 테스트 팀 (9명)
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex-1 bg-blue-100 text-blue-800 text-center py-2 rounded font-bold text-sm">
+                                MAS 심천 BA<br><span class="text-lg">5명</span>
+                            </div>
+                            <span class="text-gray-400">+</span>
+                            <div class="flex-1 bg-gray-200 text-gray-700 text-center py-2 rounded font-bold text-sm">
+                                TTL BA/QC<br><span class="text-lg">4명</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 text-center">심천 BA가 주도적으로 테스트 수행 중</p>
+                    </div>
+
+                    <!-- Role Split -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-indigo-50 p-3 rounded border border-indigo-100">
+                            <div class="font-bold text-indigo-900 text-xs mb-1">📱 iOS 개발</div>
+                            <div class="text-xs text-indigo-700">MAS 심천 + 홍콩 협업<br>(UI/UX 변경 진행)</div>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded border border-gray-200">
+                            <div class="font-bold text-gray-800 text-xs mb-1">🤖 Android 개발</div>
+                            <div class="text-xs text-gray-600">TTL 주도<br>(UI/UX 변경 진행)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: IT Development Status -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8">
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-500 pl-4">💻 IT 부문별 진행 현황</h2>
+                    <p class="mt-2 text-gray-600 text-sm">Apps UI는 디자인 변경으로 물량이 증가(98p→251p)하였으나, <span
+                            class="font-bold text-blue-600">심천/홍콩/TTL 협업</span>으로 대응 중입니다.</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex gap-2 text-xs font-bold text-white">
+                    <span class="bg-green-500 px-2 py-1 rounded">완료/안정</span>
+                    <span class="bg-yellow-400 px-2 py-1 rounded">진행중</span>
+                    <span class="bg-red-500 px-2 py-1 rounded">Risk 관리</span>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="itProgressChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Section 5: Key Issues & Action Plan (Integrated Content from Project_summary.html) -->
+        <section class="bg-gradient-to-br from-blue-900 to-blue-800 text-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold mb-6 flex items-center">
+                <span class="text-2xl mr-2">⚡</span> 주요 이슈 및 대응 (Key Issues & Risk)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Risk 1: Apps UI (Detailed content restored) -->
+                <div
+                    class="bg-red-500/20 backdrop-blur-sm p-4 rounded-lg border border-red-400/50 hover:bg-red-500/30 transition">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">RISK</span>
+                        <h3 class="font-bold text-red-100 text-sm">Apps UI 물량 급증</h3>
+                    </div>
+                    <p class="text-xs text-white/90 leading-relaxed">
+                        디자인 변경으로 페이지 수가 <strong>98p → 251p</strong>로 급증했습니다. 일정 지연 가능성이 있어 리소스 집중 배정이 필요합니다.
+                    </p>
+                </div>
+
+                <!-- Risk 2: VA Form (Detailed content restored) -->
+                <div
+                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
+                    <div class="flex items-center mb-2">
+                        <span
+                            class="bg-yellow-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">DELAY</span>
+                        <h3 class="font-bold text-blue-100 text-sm">VA 신청서 양식</h3>
+                    </div>
+                    <p class="text-xs text-white/90 leading-relaxed">
+                        가상계좌(VA) 개설 프로세스 개발은 완료되었으나, 신청서 양식 확정이 지연되고 있습니다.
+                    </p>
+                </div>
+
+                <!-- Risk 3: Market Data (Detailed content restored) -->
+                <div
+                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
+                    <div class="flex items-center mb-2">
+                        <span
+                            class="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">PENDING</span>
+                        <h3 class="font-bold text-blue-100 text-sm">마켓 데이터 결정</h3>
+                    </div>
+                    <p class="text-xs text-white/90 leading-relaxed">
+                        현재 TTL Etnet 데이터로 테스트 중입니다. MAS 자체 데이터 사용 여부에 대한 의사결정이 필요합니다.
+                    </p>
+                </div>
+
+                <!-- Risk 4: Corporate Action (Detailed content restored) -->
+                <div
+                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
+                    <div class="flex items-center mb-2">
+                        <span
+                            class="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">CHECK</span>
+                        <h3 class="font-bold text-blue-100 text-sm">Corporate Action</h3>
+                    </div>
+                    <p class="text-xs text-white/90 leading-relaxed">
+                        자동화된 CA import 파일 필요 여부에 대해 MAS US 측 확인 대기 중입니다. (수동 기능 준비완료)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-400 text-sm py-8 border-t border-gray-200 mt-8">
+            <p>MAS 맨하탄 프로젝트 관리팀 | 데이터 기준일: 2026.02.14</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Helpers ---
+        function splitLabel(label, maxLen = 16) {
+            if (label.length <= maxLen) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length <= maxLen) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function (tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        const colors = {
+            blueDark: '#1e3a8a',
+            blue: '#3b82f6',
+            green: '#10b981',
+            yellow: '#f59e0b',
+            red: '#e11d48',
+            gray: '#e5e7eb',
+            indigo: '#6366f1'
+        };
+
+        // --- 1. Overall Progress (45%) ---
+        new Chart(document.getElementById('overallProgressChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['완료', '잔여'],
+                datasets: [{
+                    data: [45, 55],
+                    backgroundColor: [colors.blue, colors.gray],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: { legend: { display: false }, tooltip: tooltipConfig }
+            }
+        });
+
+        // --- 2. Shenzhen Team Composition ---
+        new Chart(document.getElementById('shenzhenTeamChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['BA (테스트 주도)', 'iOS 개발', 'Backend Java', 'Network', 'HR'],
+                datasets: [{
+                    data: [5, 1, 1, 1, 1],
+                    backgroundColor: [
+                        colors.blue,    // BA (Main)
+                        colors.indigo,  // iOS
+                        '#818cf8',      // Java
+                        '#9ca3af',      // Network
+                        '#d1d5db'       // HR
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 12, font: { size: 11, family: 'Noto Sans KR' } }
+                    },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        // --- 3. IT Progress ---
+        const itLabels = [
+            'HKEX/US 연결 (90%)',
+            'Core/Env 셋업 (80%)',
+            'Itrade UI (80%)',
+            '청산/결제 (80%)',
+            '주문 관리 (70%)',
+            'Apps UI (Risk) (40%)',
+            '마켓 데이터 (30%)'
+        ];
+        const itData = [90, 80, 80, 80, 70, 40, 30];
+        const itColors = itData.map((val, i) => {
+            if (itLabels[i].includes('Risk')) return colors.red;
+            if (val >= 80) return colors.green;
+            if (val >= 50) return colors.yellow;
+            return colors.red;
+        });
+
+        new Chart(document.getElementById('itProgressChart'), {
+            type: 'bar',
+            data: {
+                labels: itLabels.map(l => splitLabel(l, 16)),
+                datasets: [{
+                    data: itData,
+                    backgroundColor: itColors,
+                    borderRadius: 5,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { max: 100, grid: { color: '#f3f4f6' } },
+                    y: { grid: { display: false }, ticks: { font: { weight: 'bold' } } }
+                },
+                plugins: { legend: { display: false }, tooltip: tooltipConfig }
+            }
+        });
+    </script>
+</body>
+
+</html>
