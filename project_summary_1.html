@@ -4,21 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAS 맨하탄 프로젝트 통합 현황 (2026.02.14 Final)</title>
-    <!-- Tailwind CSS -->
+    <title>MAS 맨하탄 프로젝트 진행 현황</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
         rel="stylesheet">
-
-    <!-- 
-        Base Style: Project_summary_20260214_1.html
-        Palette: "Trust & Tech" (Vibrant Blues)
-        Primary: #1e3a8a (Blue 900)
-        Secondary: #3b82f6 (Blue 500)
-    -->
 
     <style>
         body {
@@ -43,7 +33,6 @@
             }
         }
 
-        /* Timeline Styling (From Project_summary.html) */
         .step-card {
             position: relative;
             transition: transform 0.2s;
@@ -70,6 +59,15 @@
 
 <body class="antialiased">
 
+    <!-- Back to Portal -->
+    <div class="bg-blue-950 text-white">
+        <div class="max-w-6xl mx-auto px-4 py-2">
+            <a href="index.html" class="text-blue-300 hover:text-white text-sm font-medium transition-colors">
+                ← 프로젝트 포탈로 돌아가기
+            </a>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="bg-blue-900 text-white py-10 px-4 shadow-lg">
         <div class="max-w-6xl mx-auto text-center">
@@ -88,29 +86,28 @@
 
         <!-- Section 1: Executive Summary -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Metric Card -->
             <div
                 class="bg-white rounded-xl shadow-lg p-6 md:col-span-1 flex flex-col justify-center items-center text-center border-t-4 border-blue-500 z-10">
                 <h2 class="text-gray-500 font-bold text-sm uppercase tracking-wider mb-2">전체 공정률</h2>
                 <div class="relative w-40 h-40">
                     <canvas id="overallProgressChart"></canvas>
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <span class="text-4xl font-black text-blue-900">45%</span>
+                        <span class="text-4xl font-black text-blue-900" id="progressText">45%</span>
                         <span class="text-xs text-gray-400 font-bold">진행 완료</span>
                     </div>
                 </div>
-                <p class="mt-4 text-sm text-gray-600">단계: <strong class="text-blue-600">통합 준비 & SIT 시작</strong></p>
+                <p class="mt-4 text-sm text-gray-600">단계: <strong class="text-blue-600" id="phaseText">통합 준비 & SIT
+                        시작</strong></p>
             </div>
 
-            <!-- Summary Text -->
             <div class="bg-white rounded-xl shadow-lg p-8 md:col-span-2 flex flex-col justify-center z-10">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-4">프로젝트 요약 (Executive
                     Summary)</h2>
-                <p class="text-gray-600 leading-relaxed mb-4">
+                <p class="text-gray-600 leading-relaxed mb-4" id="summaryText1">
                     현재 전체 공정률 <strong class="text-blue-600">45%</strong>로, 핵심 인프라 및 Core 시스템 구축이 완료(80%)되었습니다.
                     프로젝트는 계획대로 순항 중이며, 현재 **통합 준비(Integration Preparation)** 단계로 전환되었습니다.
                 </p>
-                <p class="text-gray-600 leading-relaxed">
+                <p class="text-gray-600 leading-relaxed" id="summaryText2">
                     <span class="bg-yellow-100 px-1 rounded font-bold text-gray-700">심천 BA 5명</span>을 중심으로 본격적인 **SIT
                     테스트**가 진행 중이나,
                     Apps UI 부문의 디자인 변경으로 인한 작업량 증가가 주요 리스크로 식별되어 집중 관리가 필요합니다.
@@ -118,7 +115,7 @@
             </div>
         </section>
 
-        <!-- Section 2: Project Roadmap (Integrated from Project_summary.html) -->
+        <!-- Section 2: Project Roadmap -->
         <section>
             <div class="mb-6 text-center md:text-left">
                 <h2 class="text-2xl font-bold text-gray-800">🗓️ 프로젝트 진행 단계</h2>
@@ -126,11 +123,9 @@
             </div>
 
             <div class="relative p-4">
-                <!-- Desktop Connector Line -->
                 <div class="hidden lg:block absolute h-line bg-gray-200 top-1/2 w-full z-0" style="top: 50%;"></div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10">
-
                     <!-- Step 1 -->
                     <div class="step-card bg-gray-100 rounded-lg p-6 shadow border border-gray-200 opacity-70">
                         <div class="text-xs font-bold text-gray-500 mb-1">STEP 01</div>
@@ -170,9 +165,8 @@
             </div>
         </section>
 
-        <!-- Section 3: Organization & Testing Structure (Style from 20260214_1) -->
+        <!-- Section 3: Organization & Testing Structure -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Shenzhen Team Chart -->
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="mb-4 border-b border-gray-100 pb-4 flex justify-between items-center">
                     <div>
@@ -207,7 +201,6 @@
                 </div>
             </div>
 
-            <!-- Testing & Collaboration Structure -->
             <div class="bg-white rounded-xl shadow-md p-6 flex flex-col">
                 <div class="mb-4 border-b border-gray-100 pb-4">
                     <h2 class="text-xl font-bold text-gray-800">🛠️ 테스트 및 협업 구조</h2>
@@ -215,7 +208,6 @@
                 </div>
 
                 <div class="flex-1 space-y-4">
-                    <!-- Test Team -->
                     <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                         <h3 class="font-bold text-gray-800 mb-2 flex items-center">
                             <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>통합 테스트 팀 (9명)
@@ -232,7 +224,6 @@
                         <p class="text-xs text-gray-500 mt-2 text-center">심천 BA가 주도적으로 테스트 수행 중</p>
                     </div>
 
-                    <!-- Role Split -->
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-indigo-50 p-3 rounded border border-indigo-100">
                             <div class="font-bold text-indigo-900 text-xs mb-1">📱 iOS 개발</div>
@@ -267,62 +258,13 @@
             </div>
         </section>
 
-        <!-- Section 5: Key Issues & Action Plan (Integrated Content from Project_summary.html) -->
+        <!-- Section 5: Key Issues & Action Plan -->
         <section class="bg-gradient-to-br from-blue-900 to-blue-800 text-white rounded-xl shadow-md p-6">
             <h2 class="text-xl font-bold mb-6 flex items-center">
                 <span class="text-2xl mr-2">⚡</span> 주요 이슈 및 대응 (Key Issues & Risk)
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Risk 1: Apps UI (Detailed content restored) -->
-                <div
-                    class="bg-red-500/20 backdrop-blur-sm p-4 rounded-lg border border-red-400/50 hover:bg-red-500/30 transition">
-                    <div class="flex items-center mb-2">
-                        <span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">RISK</span>
-                        <h3 class="font-bold text-red-100 text-sm">Apps UI 물량 급증</h3>
-                    </div>
-                    <p class="text-xs text-white/90 leading-relaxed">
-                        디자인 변경으로 페이지 수가 <strong>98p → 251p</strong>로 급증했습니다. 일정 지연 가능성이 있어 리소스 집중 배정이 필요합니다.
-                    </p>
-                </div>
-
-                <!-- Risk 2: VA Form (Detailed content restored) -->
-                <div
-                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
-                    <div class="flex items-center mb-2">
-                        <span
-                            class="bg-yellow-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">DELAY</span>
-                        <h3 class="font-bold text-blue-100 text-sm">VA 신청서 양식</h3>
-                    </div>
-                    <p class="text-xs text-white/90 leading-relaxed">
-                        가상계좌(VA) 개설 프로세스 개발은 완료되었으나, 신청서 양식 확정이 지연되고 있습니다.
-                    </p>
-                </div>
-
-                <!-- Risk 3: Market Data (Detailed content restored) -->
-                <div
-                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
-                    <div class="flex items-center mb-2">
-                        <span
-                            class="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">PENDING</span>
-                        <h3 class="font-bold text-blue-100 text-sm">마켓 데이터 결정</h3>
-                    </div>
-                    <p class="text-xs text-white/90 leading-relaxed">
-                        현재 TTL Etnet 데이터로 테스트 중입니다. MAS 자체 데이터 사용 여부에 대한 의사결정이 필요합니다.
-                    </p>
-                </div>
-
-                <!-- Risk 4: Corporate Action (Detailed content restored) -->
-                <div
-                    class="bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 hover:bg-white/20 transition">
-                    <div class="flex items-center mb-2">
-                        <span
-                            class="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">CHECK</span>
-                        <h3 class="font-bold text-blue-100 text-sm">Corporate Action</h3>
-                    </div>
-                    <p class="text-xs text-white/90 leading-relaxed">
-                        자동화된 CA import 파일 필요 여부에 대해 MAS US 측 확인 대기 중입니다. (수동 기능 준비완료)
-                    </p>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="risks-grid">
+                <!-- Rendered by JS -->
             </div>
         </section>
 
@@ -332,6 +274,7 @@
 
     </main>
 
+    <script src="js/summary_data.js"></script>
     <script>
         // --- Helpers ---
         function splitLabel(label, maxLen = 16) {
@@ -371,13 +314,40 @@
             indigo: '#6366f1'
         };
 
-        // --- 1. Overall Progress (45%) ---
+        // --- Render Risks ---
+        function renderRisks() {
+            const container = document.getElementById('risks-grid');
+            const riskStyles = {
+                'RISK': 'bg-red-500/20 border-red-400/50 hover:bg-red-500/30',
+                'DELAY': 'bg-white/10 border-white/20 hover:bg-white/20',
+                'PENDING': 'bg-white/10 border-white/20 hover:bg-white/20',
+                'CHECK': 'bg-white/10 border-white/20 hover:bg-white/20'
+            };
+
+            container.innerHTML = summaryData.risks.map(risk => {
+                const style = riskStyles[risk.tag] || riskStyles['CHECK'];
+                const titleColor = risk.tag === 'RISK' ? 'text-red-100' : 'text-blue-100';
+
+                return `
+                <div class="backdrop-blur-sm p-4 rounded-lg border transition ${style}">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-${risk.tagColor} text-white text-[10px] font-bold px-1.5 py-0.5 rounded mr-2">${risk.tag}</span>
+                        <h3 class="font-bold ${titleColor} text-sm">${risk.title}</h3>
+                    </div>
+                    <p class="text-xs text-white/90 leading-relaxed">${risk.desc}</p>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- Charts ---
+        // 1. Overall Progress
         new Chart(document.getElementById('overallProgressChart'), {
             type: 'doughnut',
             data: {
                 labels: ['완료', '잔여'],
                 datasets: [{
-                    data: [45, 55],
+                    data: [summaryData.overallProgress, 100 - summaryData.overallProgress],
                     backgroundColor: [colors.blue, colors.gray],
                     borderWidth: 0,
                     hoverOffset: 4
@@ -391,19 +361,19 @@
             }
         });
 
-        // --- 2. Shenzhen Team Composition ---
+        // 2. Shenzhen Team Composition
         new Chart(document.getElementById('shenzhenTeamChart'), {
             type: 'doughnut',
             data: {
-                labels: ['BA (테스트 주도)', 'iOS 개발', 'Backend Java', 'Network', 'HR'],
+                labels: summaryData.team.chartLabels,
                 datasets: [{
-                    data: [5, 1, 1, 1, 1],
+                    data: summaryData.team.chartData,
                     backgroundColor: [
-                        colors.blue,    // BA (Main)
-                        colors.indigo,  // iOS
-                        '#818cf8',      // Java
-                        '#9ca3af',      // Network
-                        '#d1d5db'       // HR
+                        colors.blue,
+                        colors.indigo,
+                        '#818cf8',
+                        '#9ca3af',
+                        '#d1d5db'
                     ],
                     borderWidth: 2,
                     borderColor: '#ffffff'
@@ -422,17 +392,9 @@
             }
         });
 
-        // --- 3. IT Progress ---
-        const itLabels = [
-            'HKEX/US 연결 (90%)',
-            'Core/Env 셋업 (80%)',
-            'Itrade UI (80%)',
-            '청산/결제 (80%)',
-            '주문 관리 (70%)',
-            'Apps UI (Risk) (40%)',
-            '마켓 데이터 (30%)'
-        ];
-        const itData = [90, 80, 80, 80, 70, 40, 30];
+        // 3. IT Progress
+        const itLabels = summaryData.itProgress.labels;
+        const itData = summaryData.itProgress.data;
         const itColors = itData.map((val, i) => {
             if (itLabels[i].includes('Risk')) return colors.red;
             if (val >= 80) return colors.green;
@@ -461,6 +423,11 @@
                 },
                 plugins: { legend: { display: false }, tooltip: tooltipConfig }
             }
+        });
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRisks();
         });
     </script>
 </body>
