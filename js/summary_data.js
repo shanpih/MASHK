@@ -1,5 +1,5 @@
 // MAS 맨하탄 프로젝트 - 전체 진행 현황 데이터
-// Source: Project_summary_20260214_4.html
+// Source: project_summary_20260214_4.html
 // Last Updated: 2026-02-14
 
 const summaryData = {
@@ -7,8 +7,8 @@ const summaryData = {
     phase: '통합 준비 & SIT 시작',
 
     executiveSummary: {
-        text1: '현재 전체 공정률 <strong class="text-blue-600">45%</strong>로, 핵심 인프라 및 Core 시스템 구축이 완료(80%)되었습니다. 프로젝트는 계획대로 순항 중이며, 현재 **통합 준비(Integration Preparation)** 단계로 전환되었습니다.',
-        text2: '<span class="bg-yellow-100 px-1 rounded font-bold text-gray-700">심천 BA 5명</span>을 중심으로 본격적인 **SIT 테스트**가 진행 중이나, Apps UI 부문의 디자인 변경으로 인한 작업량 증가가 주요 리스크로 식별되어 집중 관리가 필요합니다.'
+        text1: '현재 전체 공정률 <strong class="text-blue-600">45%</strong>로, 핵심 인프라 및 Core 시스템 구축이 완료(80%)되었습니다. 프로젝트는 계획대로 순항 중이며, 현재 <strong>통합 준비(Integration Preparation)</strong> 단계로 전환되었습니다.',
+        text2: '<span class="bg-yellow-100 px-1 rounded font-bold text-gray-700">심천 BA 5명</span>을 중심으로 본격적인 <strong>SIT 테스트1</strong>가 진행 중이나, Apps UI 부문의 디자인 변경으로 인한 작업량 증가가 주요 리스크로 식별되어 집중 관리가 필요합니다.'
     },
 
     roadmap: [
