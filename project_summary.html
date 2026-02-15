@@ -92,26 +92,18 @@
                 <div class="relative w-40 h-40">
                     <canvas id="overallProgressChart"></canvas>
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <span class="text-4xl font-black text-blue-900" id="progressText">45%</span>
+                        <span class="text-4xl font-black text-blue-900" id="progressText"></span>
                         <span class="text-xs text-gray-400 font-bold">진행 완료</span>
                     </div>
                 </div>
-                <p class="mt-4 text-sm text-gray-600">단계: <strong class="text-blue-600" id="phaseText">통합 준비 & SIT
-                        시작</strong></p>
+                <p class="mt-4 text-sm text-gray-600">단계: <strong class="text-blue-600" id="phaseText"></strong></p>
             </div>
 
             <div class="bg-white rounded-xl shadow-lg p-8 md:col-span-2 flex flex-col justify-center z-10">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-4">프로젝트 요약 (Executive
                     Summary)</h2>
-                <p class="text-gray-600 leading-relaxed mb-4" id="summaryText1">
-                    현재 전체 공정률 <strong class="text-blue-600">45%</strong>로, 핵심 인프라 및 Core 시스템 구축이 완료(80%)되었습니다.
-                    프로젝트는 계획대로 순항 중이며, 현재 **통합 준비(Integration Preparation)** 단계로 전환되었습니다.
-                </p>
-                <p class="text-gray-600 leading-relaxed" id="summaryText2">
-                    <span class="bg-yellow-100 px-1 rounded font-bold text-gray-700">심천 BA 5명</span>을 중심으로 본격적인 **SIT
-                    테스트**가 진행 중이나,
-                    Apps UI 부문의 디자인 변경으로 인한 작업량 증가가 주요 리스크로 식별되어 집중 관리가 필요합니다.
-                </p>
+                <p class="text-gray-600 leading-relaxed mb-4" id="summaryText1"></p>
+                <p class="text-gray-600 leading-relaxed" id="summaryText2"></p>
             </div>
         </section>
 
@@ -427,6 +419,12 @@
 
         // --- Init ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Executive Summary 데이터 로드
+            document.getElementById('progressText').textContent = summaryData.overallProgress + '%';
+            document.getElementById('phaseText').textContent = summaryData.phase;
+            document.getElementById('summaryText1').innerHTML = summaryData.executiveSummary.text1;
+            document.getElementById('summaryText2').innerHTML = summaryData.executiveSummary.text2;
+
             renderRisks();
         });
     </script>
